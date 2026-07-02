@@ -3,6 +3,7 @@ from db import db
 import os
 from flask_migrate import Migrate
 from models import Usuario
+import json
 
 app = Flask(__name__)
 
@@ -39,3 +40,38 @@ def fale():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/teste_insert')
+def testes_insert():
+    user = Usuario('Cauã Carlos', 'cauaC12@gmail.com', '123456789')
+    db.session.add(user) #Insert Into Usuario(nome, email, senha) values ('...', '...', '...')
+    db.session.commit()
+    user = Usuario('Pedro', 'pedro12@gmail.com', '12345789')
+    db.session.add(user) #Insert Into Usuario(nome, email, senha) values ('...', '...', '...')
+    db.session.commit()
+    return 'Dados inseridos com sucesso!'
+
+@app.route('/teste_select')
+def teste_select():
+    users = Usuario.query.all()
+    for u in users:
+        print(u.nome)
+
+    user = Usuario.query.get(2)
+    print(f'O usuario de id 2 é {user.nome}')
+    return 'Dados recuperados'
+
+@app.route('/teste_update')
+def teste_update():
+    u = Usuario.query.get(1)
+    u.nome = "Cauã Carlos S. de Oliveira"
+    db.session.add(u)
+    db.session.commit()
+    return 'Dados alterados com sucesso!'
+
+@app.route('/teste_delete')
+def teste_delete():
+    u = Usuario.query.get(2)
+    db.session.delete(u)
+    db.session.commit()
+    return 'Dados excluídos com sucesso!'

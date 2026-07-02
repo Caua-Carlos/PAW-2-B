@@ -14,3 +14,17 @@ class Usuario(db.Model):
 
     def __repr__(self):
         return "<Usuario {}>".format(self.nome)
+    
+class Pizza(db.Model):
+    __tablename__ = 'pizza'
+    id = db.Column(db.Integer, primary_key = True)
+    sabor = db.Column(db.String(100))
+    preco = db.Column(db.String(100))
+    
+    def __init__(self, sabor, preco):
+        self.sabor = sabor
+        self.preco = preco
+
+
+    def __repr__(self):
+        return "<Pizza {}>".format(self.sabor)
