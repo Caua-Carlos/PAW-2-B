@@ -1,4 +1,6 @@
 from db import db
+from datetime import date, datetime
+from sqlalchemy import Column, Integer, String, Date, DateTime, func
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -28,3 +30,15 @@ class Pizza(db.Model):
 
     def __repr__(self):
         return "<Pizza {}>".format(self.sabor)
+
+class Pedido(db.Model):
+    __tablename__ = 'pedido'
+    id = db.Column(db.Integer, primary_key = True)
+    id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable = False)
+    id_pizza = db.Column(db.Integer, db.ForeignKey('pizza.id'), nullable = False)
+    data = db.Column(db.DateTime, default = func.now())
+
+    def __init__(self, id_usuario, id_pizza):
+        self.id_usuario = id_usuario
+        self.id_pizza = id_pizza
+        
